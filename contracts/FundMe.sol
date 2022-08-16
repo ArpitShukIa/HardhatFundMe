@@ -12,7 +12,7 @@ contract FundMe {
 
     uint256 public constant MINIMUM_USD = 50 * 10 ** 18;
 
-    address public immutable owner;
+    address private immutable owner;
     address[] public funders;
     mapping(address => uint256) public addressToAmountFunded;
 
@@ -36,20 +36,6 @@ contract FundMe {
 
     function withdraw() public onlyOwner {
         for (uint256 funderIndex = 0; funderIndex < funders.length; funderIndex++) {
-            address funder = funders[funderIndex];
-            addressToAmountFunded[funder] = 0;
-        }
-        funders = new address[](0);
-        payable(msg.sender).transfer(address(this).balance);
-    }
-
-    function cheaperWithdraw() public onlyOwner {
-        address[] memory funders = funders;
-        for (
-            uint256 funderIndex = 0;
-            funderIndex < funders.length;
-            funderIndex++
-        ) {
             address funder = funders[funderIndex];
             addressToAmountFunded[funder] = 0;
         }
